@@ -1,15 +1,10 @@
 import router from "../../router";
 import { isHexColor, isValidName } from "../../../utils/argument";
-import { makeBadge } from "../../../utils/badge";
 import axios from "axios";
 import * as process from "node:process";
+import { makeBadge } from "badge-maker";
 
 router.on("/badge/pr-org/", async function (data, response) {
-    if (!process.env.PAT_1) {
-        response.response = "ERROR: No PAT found";
-        response.status = 500;
-        return;
-    }
     if (!isValidName(data.query.org)) {
         response.response = "ERROR: Invalid owner";
         response.status = 500;
@@ -37,20 +32,23 @@ router.on("/badge/pr-org/", async function (data, response) {
     issueCount
   }
 }`;
-        const res = JSON.parse(
-            (
-                await axios.post("https://api.github.com/graphql", query, {
-                    headers: {
-                        Authorization: `bearer ${process.env.PAT_1}`
-                    }
-                })
-            ).data
-        );
-    } catch {
+        const res = await axios.post("https://api.github.com/graphql", JSON.stringify({ query }), {
+            headers: {
+                Authorization: `bearer ${process.env.PAT_1}`
+            }
+        });
+        count = res.data.data.search.issueCount;
+    } catch (e) {
+        console.log(e);
         response.response = "ERROR: Failed to fetch pr count";
         response.status = 500;
         return;
     }
-    response.response = makeBadge("Merged PR", labelColor, count.toString(), color);
+    response.response = makeBadge({
+        label: "Merged PR",
+        labelColor,
+        message: count.toString(),
+        color
+    });
     response.contentType = "image/svg+xml";
 });

@@ -2,7 +2,8 @@ export function isValidName(x: any): boolean {
     if (typeof x != "string") {
         return false;
     }
-    for (const x1 of x) {
+    for (let i = 0; i < x.length; i++) {
+        const x1 = x.charAt(i);
         if (
             !(
                 (x1 >= "0" && x1 <= "9") ||
@@ -28,7 +29,8 @@ export function isHexColor(x: any): boolean {
     if (x.charAt(0) != "#") {
         return false;
     }
-    for (const x1 of x.slice(1)) {
+    for (let i = 1; i < x.length; i++) {
+        const x1 = x.charAt(i);
         if (!((x1 >= "0" && x1 <= "9") || (x1 >= "a" && x1 <= "f") || (x1 >= "A" && x1 <= "F"))) {
             return false;
         }
