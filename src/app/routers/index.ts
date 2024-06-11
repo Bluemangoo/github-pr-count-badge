@@ -1,7 +1,6 @@
 import router from "../router";
-import { readFileSync } from "fs";
 
-router.on("/", async function(data, response) {
-    response.contentType = "text/html";
-    response.response = readFileSync(process.cwd() + "/public/index.html", "utf-8");
+router.on("/", async function (data, response) {
+    response.redirectUrl = "https://github.com/Bluemangoo/github-pr-count-badge";
+    response.redirect = true;
 });
