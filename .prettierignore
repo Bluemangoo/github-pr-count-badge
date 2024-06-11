@@ -1,0 +1,9 @@
+# Project Configs
+.idea
+
+# Node Modules
+node_modules
+
+# Cache
+.vercel
+.netlify
