@@ -50,9 +50,9 @@ router.on("/badge/pr-repo/", async function (data, response) {
         return;
     }
     response.response = makeBadge({
-        label: "Merged PR",
+        label: "Pull Requests",
         labelColor,
-        message: count.toString(),
+        message: `${count.toString()} Merged`,
         color
     });
     response.contentType = "image/svg+xml";
